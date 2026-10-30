@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2c">
+  <title>LKW Beladung · Leitstand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="LKW Beladung Startseite">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h11v9H3zM14 10h4.3l2.7 3v3.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="18" cy="18" r="1.7"/></svg></span>
+        <span><strong>LOAD<span>FLOW</span></strong><small>Beladungsleitstand</small></span>
+      </a>
+      <div class="topbar-right"><span class="live-indicator"><i></i> BEREIT</span><span class="topbar-date" id="today"></span></div>
+    </header>
+
+    <main>
+      <section class="intro-row">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> DISPOSITION / BELADUNG</div>
+          <h1>Beladungsplan</h1>
+          <p class="subtitle">Scannen. Zuordnen. Sicher auf den Weg bringen.</p>
+        </div>
+        <div class="transfer-card">
+          <div class="transfer-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 8h10M7 12h6M7 16h3"/></svg></div>
+          <div class="transfer-copy"><span>AKTUELLE TRANSFERNUMMER</span><strong id="transfer-value">Noch keine Transfernummer</strong></div>
+          <button class="edit-transfer" id="edit-transfer" aria-label="Transfernummer bearbeiten" title="Transfernummer bearbeiten"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z"/></svg></button>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="plan-panel">
+          <div class="panel-head">
+            <div><h2>Ladeplan <span>· 33 Plätze</span></h2><p>Klicken Sie auf einen Platz oder scannen Sie direkt.</p></div>
+            <div class="legend"><span><i class="legend-dot empty"></i> Frei</span><span><i class="legend-dot filled"></i> Belegt</span></div>
+          </div>
+          <div class="truck-stage">
+            <div class="truck-direction"><span>FAHRTRICHTUNG</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></div>
+            <div class="truck-layout">
+              <div class="trailer">
+                <div class="trailer-label"><span>AUFLIEGER</span><span>33 LADEPLÄTZE</span></div>
+                <div class="slot-grid" id="slot-grid" aria-label="LKW Ladeplätze"></div>
+                <div class="trailer-axles"><i></i><i></i><i></i></div>
+              </div>
+              <div class="hitch"><span></span></div>
+              <div class="cab">
+                <div class="cab-window"></div><div class="cab-grille"><i></i><i></i><i></i></div>
+                <div class="cab-wheel front"></div>
+              </div>
+            </div>
+            <div class="truck-scale"><span></span><small>HECK</small><span></span><small>FRONT</small><span></span></div>
+          </div>
+          <div class="panel-foot"><span><span class="keyboard-key">TAB</span> springt nach dem Scannen zum nächsten Platz</span><span id="scan-status">Scanner bereit</span></div>
+        </div>
+
+        <aside class="summary-panel">
+          <div class="summary-head"><div><div class="eyebrow small">ÜBERSICHT</div><h2>Beladung</h2></div><div class="summary-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h11v9H3zM14 10h4.3l2.7 3v3.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="18" cy="18" r="1.7"/></svg></div></div>
+          <div class="completion-row"><span>Belegte Plätze</span><strong><b id="occupied-count">0</b><small> / 33</small></strong></div>
+          <div class="progress-track"><div id="progress-fill"></div></div>
+          <div class="weight-card"><div class="weight-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg></div><div><span>GESAMTGEWICHT</span><strong id="total-weight">0,0 <small>kg</small></strong></div></div>
+          <div class="summary-divider"></div>
+          <div class="summary-details"><div><span>Transfernummer</span><strong id="summary-transfer">—</strong></div><div><span>Letzte Änderung</span><strong id="last-change">—</strong></div></div>
+          <div class="hint-card"><span class="hint-star">✦</span><p>Platz anklicken, Nummer scannen und Gewicht eintragen. Änderungen werden automatisch gespeichert.</p></div>
+        </aside>
+      </section>
+
+      <footer class="actionbar">
+        <div class="action-info"><span class="save-check">✓</span><span>Änderungen werden automatisch gespeichert</span></div>
+        <div class="actions"><button class="button button-secondary" id="new-transfer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Neu</button><button class="button button-primary" id="print-plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V4h10v4M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v6H7z"/><path d="M17 11h.01"/></svg>Druckplan erstellen</button></div>
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <dialog id="slot-dialog" class="modal">
+    <form id="slot-form" method="dialog">
+      <div class="modal-top"><div class="modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></div><button class="icon-close" type="button" data-close aria-label="Schließen">×</button></div>
+      <div class="modal-kicker" id="modal-position">LADEPLATZ 01</div><h2>Sendung zuordnen</h2><p class="modal-description">Barcode scannen oder Nummer eingeben und das Gewicht ergänzen.</p>
+      <label for="barcode-input">Sendungsnummer</label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M7 5v14m3-14v14m4-14v14m3-14v14m3-14v14"/></svg><input id="barcode-input" autocomplete="off" inputmode="text" placeholder="Nummer scannen …"></div>
+      <label for="weight-input">Gewicht <span>in kg</span></label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg><input id="weight-input" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0,0"><span class="input-suffix">kg</span></div>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">Speichern <span>↵</span></button></div>
+      <div class="modal-tip"><span class="keyboard-key">TAB</span> wechselt zum nächsten Ladeplatz</div>
+    </form>
+  </dialog>
+
+  <dialog id="transfer-dialog" class="modal">
+    <form id="transfer-form" method="dialog">
+      <div class="modal-top"><div class="modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 8h10M7 12h6"/></svg></div><button class="icon-close" type="button" data-close aria-label="Schließen">×</button></div>
+      <div class="modal-kicker">NEUER LADEPLAN</div><h2>Transfer starten</h2><p class="modal-description">Geben Sie die Transfernummer ein, um einen neuen Ladeplan anzulegen.</p>
+      <label for="transfer-input">Transfernummer</label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><input id="transfer-input" autocomplete="off" placeholder="z. B. TR-2026-1042" required></div>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">Ladeplan starten <span>↵</span></button></div>
+    </form>
+  </dialog>
+
+  <section id="print-sheet" aria-hidden="true"><header><div><strong>LOADFLOW <span>· BELADUNGSPLAN</span></strong><h1 id="print-transfer">Transfernummer: —</h1></div><div class="print-date" id="print-date"></div></header><div class="print-truck"><div class="print-trailer"><div class="print-label">AUFLIEGER · 33 LADEPLÄTZE</div><div id="print-slots" class="print-grid"></div></div><div class="print-hitch"></div><div class="print-cab"><span></span></div></div><footer><div><strong id="print-count">0 / 33 Plätze belegt</strong><span id="print-weight">Gesamtgewicht: 0,0 kg</span></div><span>LOADFLOW · Beladungsübersicht</span></footer></section>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+services:
+  lkw-beladung:
+    build: .
+    container_name: lkw-beladung
+    ports:
+      - "8080:80"
+    restart: unless-stopped
