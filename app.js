@@ -28,7 +28,7 @@ function slotMarkup(slot, index, printable = false) {
   if (printable) {
     return `<div class="print-slot ${slot.code ? 'loaded' : ''}"><b>PLATZ ${number}</b>${slot.code ? `<strong>${escapeHtml(slot.code)}</strong><span>${formatWeight(slot.weight)} kg</span>` : '<span>Frei</span>'}</div>`;
   }
-  return `<div class="slot ${slot.code ? 'loaded' : ''}" role="button" tabindex="0" data-slot="${index}" aria-label="Platz ${number}${slot.code ? `, Sendung ${escapeHtml(slot.code)}, ${formatWeight(slot.weight)} Kilogramm` : ', frei'}"><span class="slot-number">${number}</span>${slot.code ? `<span class="slot-code">${escapeHtml(slot.code)}</span><span class="slot-state">${formatWeight(slot.weight)} kg</span><button class="slot-remove" type="button" data-remove="${index}" aria-label="Eintrag auf Platz ${number} löschen" title="Eintrag löschen">×</button>` : '<span class="slot-state">Frei</span>'}</div>`;
+  return `<div class="slot ${slot.code ? 'loaded' : ''}" role="button" tabindex="0" data-slot="${index}" title="${slot.code ? escapeHtml(slot.code) : `Ladeplatz ${number}`}" aria-label="Platz ${number}${slot.code ? `, Sendung ${escapeHtml(slot.code)}, ${formatWeight(slot.weight)} Kilogramm` : ', frei'}"><span class="slot-number">${number}</span>${slot.code ? `<span class="slot-code">${escapeHtml(slot.code)}</span><span class="slot-state">${formatWeight(slot.weight)} kg</span><button class="slot-remove" type="button" data-remove="${index}" aria-label="Eintrag auf Platz ${number} löschen" title="Eintrag löschen">×</button>` : '<span class="slot-state">Frei</span>'}</div>`;
 }
 
 function render() {
@@ -61,9 +61,14 @@ function openSlot(index) {
   const slot = state.slots[index];
   $('modal-position').textContent = `LADEPLATZ ${String(index + 1).padStart(2, '0')}`;
   $('barcode-input').value = slot.code;
+  updateBarcodeCount();
   $('weight-input').value = slot.weight;
   slotDialog.showModal();
   setTimeout(() => $('barcode-input').focus(), 80);
+}
+
+function updateBarcodeCount() {
+  $('barcode-count').textContent = `${$('barcode-input').value.length} / 20`;
 }
 
 function closeDialog(dialog) {
@@ -111,8 +116,12 @@ $('slot-form').addEventListener('submit', (event) => {
   const savedIndex = activeSlot;
   saveState();
   closeDialog(slotDialog);
-  showToast(`Sendung auf Platz ${String(savedIndex + 1).padStart(2, '0')} gespeichert`);
+  const nextIndex = (savedIndex + 1) % SLOT_COUNT;
+  showToast(`Platz ${String(savedIndex + 1).padStart(2, '0')} gespeichert`);
+  openSlot(nextIndex);
 });
+
+$('barcode-input').addEventListener('input', updateBarcodeCount);
 
 slotDialog.addEventListener('keydown', (event) => {
   if (event.key !== 'Tab') return;

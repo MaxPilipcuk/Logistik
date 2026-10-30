@@ -35,6 +35,15 @@
       </section>
 
       <section class="workspace">
+        <aside class="summary-panel">
+          <div class="summary-head"><div><div class="eyebrow small">LIVE-STATUS</div><h2>Beladung</h2></div><div class="summary-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h11v9H3zM14 10h4.3l2.7 3v3.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="18" cy="18" r="1.7"/></svg></div></div>
+          <div class="status-tile occupied-tile"><div class="completion-row"><span>Belegte Plätze</span><strong><b id="occupied-count">0</b><small> / 33</small></strong></div><div class="progress-track"><div id="progress-fill"></div></div></div>
+          <div class="weight-card status-tile"><div class="weight-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg></div><div><span>GESAMTGEWICHT</span><strong id="total-weight">0,0 <small>kg</small></strong></div></div>
+          <div class="status-details">
+            <div class="status-tile"><span>TRANSFERNUMMER</span><strong id="summary-transfer">—</strong></div>
+            <div class="status-tile"><span>LETZTE ÄNDERUNG</span><strong id="last-change">—</strong></div>
+          </div>
+        </aside>
         <div class="plan-panel">
           <div class="panel-head">
             <div><h2>Ladeplan <span>· 33 Plätze</span></h2><p>Klicken Sie auf einen Platz oder scannen Sie direkt.</p></div>
@@ -59,15 +68,6 @@
           <div class="panel-foot"><span><span class="keyboard-key">TAB</span> springt nach dem Scannen zum nächsten Platz</span><span id="scan-status">Scanner bereit</span></div>
         </div>
 
-        <aside class="summary-panel">
-          <div class="summary-head"><div><div class="eyebrow small">ÜBERSICHT</div><h2>Beladung</h2></div><div class="summary-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h11v9H3zM14 10h4.3l2.7 3v3.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="18" cy="18" r="1.7"/></svg></div></div>
-          <div class="completion-row"><span>Belegte Plätze</span><strong><b id="occupied-count">0</b><small> / 33</small></strong></div>
-          <div class="progress-track"><div id="progress-fill"></div></div>
-          <div class="weight-card"><div class="weight-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg></div><div><span>GESAMTGEWICHT</span><strong id="total-weight">0,0 <small>kg</small></strong></div></div>
-          <div class="summary-divider"></div>
-          <div class="summary-details"><div><span>Transfernummer</span><strong id="summary-transfer">—</strong></div><div><span>Letzte Änderung</span><strong id="last-change">—</strong></div></div>
-          <div class="hint-card"><span class="hint-star">✦</span><p>Platz anklicken, Nummer scannen und Gewicht eintragen. Änderungen werden automatisch gespeichert.</p></div>
-        </aside>
       </section>
 
       <footer class="actionbar">
@@ -82,9 +82,9 @@
     <form id="slot-form" method="dialog">
       <div class="modal-top"><div class="modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></div><button class="icon-close" type="button" data-close aria-label="Schließen">×</button></div>
       <div class="modal-kicker" id="modal-position">LADEPLATZ 01</div><h2>Sendung zuordnen</h2><p class="modal-description">Barcode scannen oder Nummer eingeben und das Gewicht ergänzen.</p>
-      <label for="barcode-input">Sendungsnummer</label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M7 5v14m3-14v14m4-14v14m3-14v14m3-14v14"/></svg><input id="barcode-input" autocomplete="off" inputmode="text" placeholder="Nummer scannen …"></div>
+      <label for="barcode-input">Sendungsnummer <span>max. 20 Zeichen</span></label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M7 5v14m3-14v14m4-14v14m3-14v14m3-14v14"/></svg><input id="barcode-input" autocomplete="off" inputmode="text" maxlength="20" aria-describedby="barcode-count" placeholder="Nummer scannen …"></div><div class="input-hint"><span>Barcode-Scanner bereit</span><span id="barcode-count">0 / 20</span></div>
       <label for="weight-input">Gewicht <span>in kg</span></label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg><input id="weight-input" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0,0"><span class="input-suffix">kg</span></div>
-      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">Speichern <span>↵</span></button></div>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">OK · nächster Platz <span>↵</span></button></div>
       <div class="modal-tip"><span class="keyboard-key">TAB</span> wechselt zum nächsten Ladeplatz</div>
     </form>
   </dialog>

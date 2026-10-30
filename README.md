@@ -13,9 +13,9 @@ Danach ist die Anwendung unter `http://localhost:8080` erreichbar.
 ## Funktionen
 
 - 33 klickbare Ladeplätze in einer LKW-Ansicht
-- Barcode-Scanner als Tastatureingabe sowie manuelle Sendungsnummer
+- Barcode-Scanner mit bis zu 20 Zeichen sowie manuelle Sendungsnummer
 - Gewichtseingabe in Kilogramm mit einer Nachkommastelle
-- `Tab` speichert den aktuellen Platz und öffnet den nächsten Ladeplatz
+- `Tab` oder OK speichert den aktuellen Platz und öffnet den nächsten Ladeplatz
 - Einzelne Einträge über das `×` am Ladeplatz löschen
 - Neue Transfernummer starten; Browser speichert den aktuellen Plan lokal
 - Druckansicht als ein A4-Blatt im Querformat; der Browser-Druckdialog kann den Standarddrucker verwenden
