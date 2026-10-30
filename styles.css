@@ -36,3 +36,19 @@ main{padding:26px 24px}
 @media(min-width:1800px){.slot-code{font-size:16px}}
 }
 @media print{.status-strip{display:none}.print-slot strong{white-space:normal;overflow-wrap:anywhere;word-break:break-all;font-size:8px;line-height:1.2;overflow:visible}}
+
+/* Readable dialog headings and local site branding. */
+@media screen {
+#modal-position{font:800 clamp(28px,5vw,38px)/1.2 var(--display);color:var(--blue);letter-spacing:.3px;margin:18px 0 16px;padding:14px 16px;background:#edf3ff;border:1px solid #cadbff;border-radius:10px}
+.modal h2{font-size:27px;line-height:1.25;margin:8px 0 10px}
+.modal label{font-size:15px;margin-top:18px}
+.modal-description{font-size:13px;line-height:1.5}
+.modal-kicker{font-size:12px}
+.intro-row h1{font-size:36px}
+.panel-head h2{font-size:22px}
+.cab-window{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tesa-logo{display:block;width:86%;height:auto;max-height:85%;object-fit:contain}
+.creator-credit{margin:0 2px 12px;text-align:right;color:#8391a4;font-size:12px;letter-spacing:.2px}
+.creator-credit strong{font-weight:600;color:#526580}
+@media(max-width:600px){.modal h2{font-size:24px}.intro-row h1{font-size:30px}}
+}
