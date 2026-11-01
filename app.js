@@ -23,12 +23,19 @@ function saveState() {
   render();
 }
 
+function slotPosition(index) {
+  return { row: Math.floor(index / 3) + 1, side: ['Links', 'Mitte', 'Rechts'][index % 3], gridRow: 3 - (index % 3) };
+}
+
 function slotMarkup(slot, index, printable = false) {
+  const position = slotPosition(index);
+  const location = `Reihe ${position.row} · ${position.side}`;
+  const placement = `grid-column:${position.row};grid-row:${position.gridRow}`;
   const number = String(index + 1).padStart(2, '0');
   if (printable) {
-    return `<div class="print-slot ${slot.code ? 'loaded' : ''}"><b>PLATZ ${number}</b>${slot.code ? `<strong>${escapeHtml(slot.code)}</strong><span>${formatWeight(slot.weight)} kg</span>` : '<span>Frei</span>'}</div>`;
+    return `<div class="print-slot ${slot.code ? 'loaded' : ''}" style="${placement}"><b>PLATZ ${number}</b><small class="print-location">${location}</small>${slot.code ? `<strong>${escapeHtml(slot.code)}</strong><span>${formatWeight(slot.weight)} kg</span>` : '<span>Frei</span>'}</div>`;
   }
-  return `<div class="slot ${slot.code ? 'loaded' : ''}" role="button" tabindex="0" data-slot="${index}" title="${slot.code ? escapeHtml(slot.code) : `Ladeplatz ${number}`}" aria-label="Platz ${number}${slot.code ? `, Sendung ${escapeHtml(slot.code)}, ${formatWeight(slot.weight)} Kilogramm` : ', frei'}"><span class="slot-number">${number}</span>${slot.code ? `<span class="slot-code">${escapeHtml(slot.code)}</span><span class="slot-state">${formatWeight(slot.weight)} kg</span><button class="slot-remove" type="button" data-remove="${index}" aria-label="Eintrag auf Platz ${number} löschen" title="Eintrag löschen">×</button>` : '<span class="slot-state">Frei</span>'}</div>`;
+  return `<div class="slot ${slot.code ? 'loaded' : ''}" role="button" tabindex="0" style="${placement}" data-slot="${index}" title="${slot.code ? escapeHtml(slot.code) : `Ladeplatz ${number}`}" aria-label="Platz ${number}, ${location}${slot.code ? `, Sendung ${escapeHtml(slot.code)}, ${formatWeight(slot.weight)} Kilogramm` : ', frei'}"><span class="slot-number">${number}</span><span class="slot-location">${location}</span>${slot.code ? `<span class="slot-code">${escapeHtml(slot.code)}</span><span class="slot-state">${formatWeight(slot.weight)} kg</span><button class="slot-remove" type="button" data-remove="${index}" aria-label="Eintrag auf Platz ${number} löschen" title="Eintrag löschen">×</button>` : '<span class="slot-state">Frei</span>'}</div>`;
 }
 
 function render() {
@@ -59,7 +66,9 @@ function escapeHtml(value) {
 function openSlot(index) {
   activeSlot = index;
   const slot = state.slots[index];
-  $('modal-position').textContent = `LADEPLATZ ${String(index + 1).padStart(2, '0')}`;
+  $('modal-position').textContent = `PLATZ ${String(index + 1).padStart(2, '0')}`;
+  const position = slotPosition(index);
+  $('modal-location').textContent = `Reihe ${position.row} · ${position.side}`;
   $('barcode-input').value = slot.code;
   updateBarcodeCount();
   $('weight-input').value = slot.weight;

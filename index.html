@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261101-truck">
+  <link rel="stylesheet" href="styles.css?v=20261101-positions">
 </head>
 <body>
   <div class="app-shell">
@@ -44,14 +44,14 @@
       <section class="workspace">
         <div class="plan-panel">
           <div class="panel-head">
-            <div><h2>Ladeplan <span>· 33 Plätze</span></h2><p>Klicken Sie auf einen Platz oder scannen Sie direkt.</p></div>
+            <div><h2>Ladefläche von oben <span>· 33 Plätze</span></h2><p class="orientation-summary">3 Paletten nebeneinander · 11 Reihen hintereinander · <strong>keine Stapelung</strong></p></div>
             <div class="legend"><span><i class="legend-dot empty"></i> Frei</span><span><i class="legend-dot filled"></i> Belegt</span></div>
           </div>
           <div class="truck-stage">
             <div class="truck-direction"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5m6-6-6 6 6 6"/></svg><span>FAHRTRICHTUNG</span></div>
             <div class="truck-layout">
               <div class="trailer">
-                <div class="trailer-label"><span>AUFLIEGER</span><span>33 LADEPLÄTZE</span></div>
+                <div class="trailer-label"><span>← STIRNWAND / FAHRERHAUS · REIHE 1</span><span>REIHE 11 · HECK / LADEKANTE →</span></div>
                 <div class="slot-grid" id="slot-grid" aria-label="LKW Ladeplätze"></div>
                 <div class="trailer-axles"><i></i><i></i><i></i></div>
               </div>
@@ -90,7 +90,7 @@
 <path d="M17 162l34-9" stroke="#132a43" stroke-width="2"/>
 </svg></div>
             </div>
-            <div class="truck-scale"><span></span><small>FRONT</small><span></span><small>HECK</small><span></span></div>
+            <p class="orientation-note">Links/Rechts gilt beim Blick vom Heck zum Fahrerhaus (←). Im Plan: Links unten, Rechts oben.</p>
           </div>
           <div class="panel-foot"><span><span class="keyboard-key">TAB</span> springt nach dem Scannen zum nächsten Platz</span><span id="scan-status">Scanner bereit</span></div>
         </div>
@@ -110,7 +110,7 @@
   <dialog id="slot-dialog" class="modal">
     <form id="slot-form" method="dialog">
       <div class="modal-top"><div class="modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></div><button class="icon-close" type="button" data-close aria-label="Schließen">×</button></div>
-      <div class="modal-kicker" id="modal-position">LADEPLATZ 01</div><h2>Sendung zuordnen</h2><p class="modal-description">Barcode scannen oder Nummer eingeben und das Gewicht ergänzen.</p>
+      <div class="modal-kicker" id="modal-position">PLATZ 01</div><p id="modal-location" class="modal-location">Reihe 1 · Links</p><h2>Sendung zuordnen</h2><p class="modal-description">Barcode scannen oder Nummer eingeben und das Gewicht ergänzen.</p>
       <label for="barcode-input">Sendungsnummer</label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M7 5v14m3-14v14m4-14v14m3-14v14m3-14v14"/></svg><input id="barcode-input" maxlength="20" autocomplete="off" inputmode="text" placeholder="Nummer scannen …"></div>
       <div class="input-hint" id="barcode-count">0 / 20</div><label for="weight-input">Gewicht <span>in kg</span></label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg><input id="weight-input" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0,0"><span class="input-suffix">kg</span></div>
       <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">OK · nächster Platz <span>↵</span></button></div>
@@ -127,7 +127,7 @@
     </form>
   </dialog>
 
-  <section id="print-sheet" aria-hidden="true"><header><div><strong>LOADFLOW <span>· BELADUNGSPLAN</span></strong><h1 id="print-transfer">Transfernummer: —</h1></div><div class="print-date" id="print-date"></div></header><div class="print-truck"><div class="print-trailer"><div class="print-label">AUFLIEGER · 33 LADEPLÄTZE</div><div id="print-slots" class="print-grid"></div></div><div class="print-hitch"></div><div class="print-cab"><span></span></div></div><footer><div><strong id="print-count">0 / 33 Plätze belegt</strong><span id="print-weight">Gesamtgewicht: 0,0 kg</span></div><span>LOADFLOW · Beladungsübersicht</span></footer></section>
-  <script src="app.js?v=20261030-3"></script>
+  <section id="print-sheet" aria-hidden="true"><header><div><strong>LOADFLOW <span>· BELADUNGSPLAN</span></strong><h1 id="print-transfer">Transfernummer: —</h1></div><div class="print-date" id="print-date"></div></header><div class="print-truck"><div class="print-trailer"><div class="print-label">LADEFLÄCHE VON OBEN · 3 NEBENEINANDER · 11 REIHEN · KEINE STAPELUNG<br>← STIRNWAND / REIHE 1 · HECK / REIHE 11 →<br>Links/Rechts: Blick vom Heck zum Fahrerhaus (←). Links unten, Rechts oben.</div><div id="print-slots" class="print-grid"></div></div><div class="print-hitch"></div><div class="print-cab"><span></span></div></div><footer><div><strong id="print-count">0 / 33 Plätze belegt</strong><span id="print-weight">Gesamtgewicht: 0,0 kg</span></div><span>LOADFLOW · Beladungsübersicht</span></footer></section>
+  <script src="app.js?v=20261101-positions"></script>
 </body>
 </html>
