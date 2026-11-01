@@ -105,3 +105,25 @@ main{padding:26px 24px}
 .print-trailer{height:120mm}
 .print-grid{height:85mm}
 }
+
+.tractor-top,.overhead-axles{display:none}
+@media screen {
+.plan-controls{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.view-switch{display:flex;gap:4px;padding:4px;background:#edf2f8;border:1px solid #dce5ef;border-radius:10px}
+.view-switch button{border:0;background:transparent;padding:10px 15px;border-radius:7px;font:600 13px var(--font);color:#5a6e87;cursor:pointer}
+.view-switch button[aria-pressed="true"]{background:#2563eb;color:white;box-shadow:0 3px 8px #2563eb30}
+.view-switch button:focus-visible{outline:3px solid #8db1fa;outline-offset:2px}
+.truck-stage[data-view="top"] .tractor-art,.truck-stage[data-view="top"] .trailer-axles{display:none}
+.truck-stage[data-view="top"] .tractor-top{display:block;width:100%;height:100%}
+.truck-stage[data-view="top"] .cab{height:390px;width:205px;flex-basis:205px;transform:none;align-self:center}
+.truck-stage[data-view="top"] .truck-layout{align-items:center;padding-top:27px;padding-bottom:30px}
+.truck-stage[data-view="top"] .hitch{align-self:center;height:120px;width:10px;margin:0;border-radius:4px}
+.truck-stage[data-view="top"] .trailer{border:5px solid #8f9fb3;border-radius:8px;box-shadow:inset 0 0 0 4px white,0 4px 10px #15243b18}
+.truck-stage[data-view="top"] .overhead-axles{display:block;position:absolute;inset:-20px 0;pointer-events:none}
+.overhead-axles i{position:absolute;right:8%;height:100%;width:27px}
+.overhead-axles i:nth-child(2){right:calc(8% + 40px)}
+.overhead-axles i:nth-child(3){right:calc(8% + 80px)}
+.overhead-axles i:before,.overhead-axles i:after{content:"";position:absolute;left:0;width:27px;height:16px;border:2px solid #162231;border-radius:5px;background:repeating-linear-gradient(90deg,#27384b 0 4px,#40546b 4px 6px)}
+.overhead-axles i:before{top:0}.overhead-axles i:after{bottom:0}
+@media(max-width:900px){.panel-head{flex-wrap:wrap;gap:14px}.plan-controls{gap:12px}}
+}

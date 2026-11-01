@@ -186,3 +186,15 @@ document.addEventListener('keydown', (event) => {
 
 $('today').textContent = new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date());
 render();
+
+const viewButtons = document.querySelectorAll('[data-truck-view]');
+function setTruckView(view) {
+  const selected = view === 'top' ? 'top' : 'side';
+  $('truck-stage').dataset.view = selected;
+  viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.truckView === selected)));
+  try { localStorage.setItem('loadflow-view', selected); } catch (_) {}
+}
+viewButtons.forEach(button => button.addEventListener('click', () => setTruckView(button.dataset.truckView)));
+let savedTruckView = 'side';
+try { savedTruckView = localStorage.getItem('loadflow-view') || 'side'; } catch (_) {}
+setTruckView(savedTruckView);
