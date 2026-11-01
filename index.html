@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261030-5">
+  <link rel="stylesheet" href="styles.css?v=20261101-truck">
 </head>
 <body>
   <div class="app-shell">
@@ -56,10 +56,39 @@
                 <div class="trailer-axles"><i></i><i></i><i></i></div>
               </div>
               <div class="hitch"><span></span></div>
-              <div class="cab">
-                <div class="cab-window"></div><div class="cab-grille"><i></i><i></i><i></i></div>
-                <div class="cab-wheel front"></div>
-              </div>
+              <div class="cab" aria-hidden="true"><svg class="tractor-art" viewBox="0 0 220 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs>
+<linearGradient id="truck-blue" x1="0" x2="1"><stop stop-color="#154294"/><stop offset=".24" stop-color="#397fe7"/><stop offset=".65" stop-color="#2366c9"/><stop offset="1" stop-color="#153b7b"/></linearGradient>
+<linearGradient id="truck-glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b9d8ee"/><stop offset=".4" stop-color="#395f82"/><stop offset="1" stop-color="#152c47"/></linearGradient>
+<linearGradient id="truck-metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8e1eb"/><stop offset=".5" stop-color="#718297"/><stop offset="1" stop-color="#b8c4d1"/></linearGradient>
+<radialGradient id="truck-tire"><stop offset=".45" stop-color="#344254"/><stop offset=".8" stop-color="#17212f"/><stop offset="1" stop-color="#0c1420"/></radialGradient>
+<g id="truck-wheel"><circle r="30" fill="url(#truck-tire)"/><circle r="25" fill="none" stroke="#465366" stroke-width="2"/><circle r="17" fill="url(#truck-metal)" stroke="#8797aa" stroke-width="2"/><circle r="10" fill="#3b4e65"/><circle r="5" fill="#bcc9d7"/><g fill="#e5ebf3"><circle cx="0" cy="-12" r="2"/><circle cx="11" cy="-4" r="2"/><circle cx="7" cy="10" r="2"/><circle cx="-7" cy="10" r="2"/><circle cx="-11" cy="-4" r="2"/></g></g>
+</defs>
+<ellipse cx="111" cy="345" rx="106" ry="4" fill="#162e4a" opacity=".13"/>
+<path d="M83 278H216V305H88Z" fill="#25384d" stroke="#152437" stroke-width="2"/>
+<path d="M141 274h62v8h-62z" fill="#101c2d"/>
+<rect x="117" y="284" width="36" height="29" rx="5" fill="url(#truck-metal)" stroke="#62748a"/>
+<path d="M125 285v27m20-27v27" stroke="#617287" stroke-width="3"/>
+<path d="M12 280V145L29 87Q37 64 64 59L109 48Q133 43 142 61L147 103V280Z" fill="url(#truck-blue)" stroke="#173c76" stroke-width="2"/>
+<path d="M37 85Q44 67 65 64l43-11q21-5 29 10l5 26Z" fill="#4c8be5" opacity=".7"/>
+<path d="M18 151l18-54h54v69H19Z" fill="url(#truck-glass)" stroke="#90b6de" stroke-width="2"/>
+<path d="M37 103l-12 42 47-42Z" fill="#d0e7f9" opacity=".24"/>
+<path d="M96 96h37l4 69H96Z" fill="#193b65" stroke="#5889bd" stroke-width="2"/>
+<path d="M92 90v176h47V90" fill="none" stroke="#12498e" stroke-width="2"/>
+<rect x="105" y="181" width="20" height="5" rx="2.5" fill="#112e50"/>
+<path d="M15 174h74v7H15Z" fill="#8ab5eb" opacity=".6"/>
+<path d="M15 201h71v49H15Z" fill="#163963" stroke="#4f86c6"/>
+<path d="M20 210h60m-60 9h60m-60 9h60m-60 9h60" stroke="#7391b6" stroke-width="2"/>
+<path d="M9 253h29v15H9Z" fill="#e4eff8" stroke="#87a5c6"/><path d="M9 268h13v6H9Z" fill="#e7ad4c"/>
+<path d="M7 278h85v27H7Z" fill="url(#truck-blue)" stroke="#173c76" stroke-width="2"/>
+<path d="M7 294h26v10H7Z" fill="#192f49"/>
+<path d="M83 278h27v7H83m0 9h27v7H83" stroke="#afc3d8" stroke-width="4"/>
+<path d="M17 314a34 34 0 0 1 68 0" fill="#122c4b" stroke="#4c82c5" stroke-width="5"/>
+<path d="M144 314a34 34 0 0 1 68 0" fill="#23364c" stroke="#687c94" stroke-width="5"/>
+<use href="#truck-wheel" x="51" y="315"/><use href="#truck-wheel" x="178" y="315"/>
+<path d="M15 126H6v41h8" fill="#213951" stroke="#152b40" stroke-width="3"/><rect x="2" y="132" width="9" height="27" rx="3" fill="#355577"/>
+<path d="M17 162l34-9" stroke="#132a43" stroke-width="2"/>
+</svg></div>
             </div>
             <div class="truck-scale"><span></span><small>FRONT</small><span></span><small>HECK</small><span></span></div>
           </div>

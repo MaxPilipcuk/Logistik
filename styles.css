@@ -69,3 +69,21 @@ main{padding:26px 24px}
 .truck-direction{flex-direction:row-reverse}
 .truck-direction svg{transform:none}
 }
+
+/* Side-view tractor and trailer running gear. */
+@media screen {
+.truck-layout{align-items:flex-end;padding-bottom:62px;gap:0}
+.cab{flex:0 0 205px;width:205px;height:326px;align-self:flex-end;transform:translateY(34px);background:none;border:0;border-radius:0;box-shadow:none;position:relative}
+.cab:before,.cab:after{display:none}
+.tractor-art{display:block;width:100%;height:100%;overflow:visible}
+.hitch{width:10px;flex:0 0 10px;height:15px;background:#2c3e54;border:0;align-self:flex-end;margin:0 0 5px}
+.hitch:before{display:none}
+.trailer{border:2px solid #91a1b5;border-bottom:10px solid #35495f;border-radius:5px;background:linear-gradient(#f0f4f8,#e5ebf2);box-shadow:inset 0 0 0 4px #fff,0 6px 9px #15243b13}
+.trailer:before,.trailer:after{background:linear-gradient(90deg,#c0ccda,#f5f8fc,#a6b6ca);width:5px}
+.trailer-axles{right:8%;bottom:-43px;gap:9px;z-index:2;padding:0 5px}
+.trailer-axles:before{content:"";position:absolute;left:0;right:0;top:-5px;height:28px;border-radius:16px 16px 3px 3px;background:#35495f;border-top:3px solid #6a7e95;z-index:-1}
+.trailer-axles i{display:block;position:relative;width:59px;height:59px;border:3px solid #15202e;border-radius:50%;background:radial-gradient(circle,#b9c7d7 0 9%,#40566f 10% 23%,#c0ccda 24% 38%,#778a9f 39% 43%,#202d3e 44% 65%,#364356 66% 70%,#15202e 71%);box-shadow:0 4px 4px #15243b25}
+.trailer-axles i:after{content:"";position:absolute;inset:16px;border:3px dotted #e4ebf4;border-radius:50%}
+.truck-scale{margin-top:0}
+@media(max-width:1200px){.cab{flex-basis:175px;width:175px;height:279px}.truck-layout{min-width:1150px}}
+}
