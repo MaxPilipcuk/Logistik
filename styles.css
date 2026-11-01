@@ -54,3 +54,5 @@ main{padding:26px 24px}
 }
 
 @media screen{.topbar{padding-right:24px}.header-tesa-logo{display:block;width:90px;height:auto;flex:none}.topbar-right{gap:20px}@media(max-width:600px){.topbar{padding-right:15px}.header-tesa-logo{width:70px}.topbar-right{gap:10px}}}
+
+@media print{.print-cab,.print-hitch,.print-trailer:after{display:none!important}.print-trailer{width:100%!important}}
