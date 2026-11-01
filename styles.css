@@ -56,3 +56,16 @@ main{padding:26px 24px}
 @media screen{.topbar{padding-right:24px}.header-tesa-logo{display:block;width:90px;height:auto;flex:none}.topbar-right{gap:20px}@media(max-width:600px){.topbar{padding-right:15px}.header-tesa-logo{width:70px}.topbar-right{gap:10px}}}
 
 @media print{.print-cab,.print-hitch,.print-trailer:after{display:none!important}.print-trailer{width:100%!important}}
+
+@media screen{
+.truck-layout{flex-direction:row-reverse}
+.cab{position:relative;border-radius:26px 8px 8px 17px;background:linear-gradient(90deg,#2862ce 0%,#397be9 30%,#2863d4 100%);border-color:#2155b6;box-shadow:inset 0 0 0 4px #ffffff25}
+.cab:before{content:"";position:absolute;left:-5px;top:36px;width:9px;height:48px;border-radius:6px 0 0 6px;background:#d5e4ff;box-shadow:0 92px 0 -1px #d5e4ff}
+.cab-window{left:11px;right:auto;top:31px;width:54px;height:72px;border-radius:14px 5px 5px 5px;transform:skewY(-5deg);background:linear-gradient(145deg,#b7d0f7,#608ce0)}
+.cab-grille{left:7px;right:auto;bottom:19px;width:27px}
+.cab-wheel{left:auto;right:17px;bottom:-15px;width:39px;height:39px}
+.trailer-axles{right:10%;bottom:-22px;gap:10px}
+.trailer-axles i{width:22px;height:42px;border:4px solid #8e9eb4;border-radius:10px;background:#243247;box-shadow:inset 0 0 0 4px #65758a}
+.truck-direction{flex-direction:row-reverse}
+.truck-direction svg{transform:none}
+}
