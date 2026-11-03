@@ -130,3 +130,5 @@ main{padding:26px 24px}
 
 
 .live-indicator.offline{color:#b42318}.live-indicator.offline i{background:#d92d20;box-shadow:none}
+
+#slot-dialog .modal-actions{flex-wrap:wrap}

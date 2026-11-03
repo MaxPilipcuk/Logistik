@@ -156,7 +156,7 @@ $('slot-grid').addEventListener('keydown', (event) => {
   }
 });
 
-async function saveSlotAndNext(allowEmpty = false) {
+async function saveSlotAndNext(allowEmpty = false, advance = true) {
   if (busy || activeSlot < 0) return;
   const code = $('barcode-input').value.trim();
   const weight = $('weight-input').value.replace(',', '.');
@@ -172,12 +172,13 @@ async function saveSlotAndNext(allowEmpty = false) {
     closeDialog(slotDialog);
     showToast(`Platz ${String(savedIndex + 1).padStart(2, '0')} gespeichert`);
   });
-  if (!slotDialog.open) openSlot((savedIndex + 1) % SLOT_COUNT);
+  if (advance && !slotDialog.open) openSlot((savedIndex + 1) % SLOT_COUNT);
 }
 $('slot-form').addEventListener('submit', (event) => {
   event.preventDefault();
   saveSlotAndNext();
 });
+$('save-slot-close').addEventListener('click', () => saveSlotAndNext(false, false));
 $('barcode-input').addEventListener('input', updateBarcodeCount);
 slotDialog.addEventListener('keydown', (event) => {
   if (event.key !== 'Tab') return;

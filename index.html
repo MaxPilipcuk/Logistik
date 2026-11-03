@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261103-central">
+  <link rel="stylesheet" href="styles.css?v=20261103-ok-close">
 </head>
 <body>
   <div class="app-shell">
@@ -125,7 +125,7 @@
       <div class="modal-kicker" id="modal-position">PLATZ 01</div><p id="modal-location" class="modal-location">Reihe 1 · Links</p><h2>Sendung zuordnen</h2><p class="modal-description">Barcode scannen oder Nummer eingeben und das Gewicht ergänzen.</p>
       <label for="barcode-input">Sendungsnummer</label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v14M7 5v14m3-14v14m4-14v14m3-14v14m3-14v14"/></svg><input id="barcode-input" maxlength="20" autocomplete="off" inputmode="text" placeholder="Nummer scannen …"></div>
       <div class="input-hint" id="barcode-count">0 / 20</div><label for="weight-input">Gewicht <span>in kg</span></label><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m-7 3h14l2 11H3L5 9Z"/><path d="m12 12 3-2"/><circle cx="12" cy="12" r="1"/></svg><input id="weight-input" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0,0"><span class="input-suffix">kg</span></div>
-      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" type="submit">OK · nächster Platz <span>↵</span></button></div>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close>Abbrechen</button><button class="button button-primary" id="save-slot-close" type="button" title="Speichern und schließen">OK</button><button class="button button-primary" type="submit">OK · nächster Platz <span>↵</span></button></div>
       <div class="modal-tip"><span class="keyboard-key">TAB</span> wechselt zum nächsten Ladeplatz</div>
     </form>
   </dialog>
@@ -140,7 +140,7 @@
   </dialog>
 
   <section id="print-sheet" aria-hidden="true"><header><div><strong>LOADFLOW <span>· BELADUNGSPLAN</span></strong><h1 id="print-transfer">Transfernummer: —</h1></div><div class="print-date" id="print-date"></div></header><div class="print-truck"><div class="print-trailer"><div class="print-label">LADEFLÄCHE VON OBEN · 3 NEBENEINANDER · 11 REIHEN · KEINE STAPELUNG<br>← STIRNWAND / REIHE 1 · HECK / REIHE 11 →<br>Links/Rechts: Blick vom Heck zum Fahrerhaus (←). Links unten, Rechts oben.</div><div id="print-slots" class="print-grid"></div></div><div class="print-hitch"></div><div class="print-cab"><span></span></div></div><footer><div><strong id="print-count">0 / 33 Plätze belegt</strong><span id="print-weight">Gesamtgewicht: 0,0 kg</span></div><span>LOADFLOW · Beladungsübersicht</span></footer></section>
-  <script src="app.js?v=20261103-central"></script>
+  <script src="app.js?v=20261103-ok-close"></script>
 </body>
 </html>
 
