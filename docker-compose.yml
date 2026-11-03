@@ -4,4 +4,16 @@ services:
     container_name: lkw-beladung
     ports:
       - "8080:80"
+    volumes:
+      - ladeplan-data:/data
+    networks:
+      - default
+      - proxy
     restart: unless-stopped
+
+volumes:
+  ladeplan-data:
+
+networks:
+  proxy:
+    external: true

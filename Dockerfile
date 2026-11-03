@@ -1,5 +1,9 @@
-FROM nginx:1.27-alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY index.html styles.css app.js TESA-Logo.svg /usr/share/nginx/html/
+FROM python:3.13-alpine
+WORKDIR /app
+RUN pip install --no-cache-dir gunicorn==23.0.0 && adduser -D -u 10001 app && mkdir /data && chown app:app /data
+COPY server.py index.html styles.css app.js TESA-Logo.svg ./
+ENV DB_PATH=/data/ladeplan.db PYTHONUNBUFFERED=1
+USER app
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1/api/health', timeout=2)" || exit 1
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "1", "--threads", "4", "--access-logfile", "-", "server:application"]

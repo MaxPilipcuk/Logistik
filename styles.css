@@ -127,3 +127,6 @@ main{padding:26px 24px}
 .overhead-axles i:before{top:0}.overhead-axles i:after{bottom:0}
 @media(max-width:900px){.panel-head{flex-wrap:wrap;gap:14px}.plan-controls{gap:12px}}
 }
+
+
+.live-indicator.offline{color:#b42318}.live-indicator.offline i{background:#d92d20;box-shadow:none}

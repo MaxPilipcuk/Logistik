@@ -2,3 +2,8 @@
 .github
 README.md
 *.log
+upload/
+tests/
+__pycache__/
+*.db
+*.db-*

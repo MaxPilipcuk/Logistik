@@ -1,26 +1,67 @@
 const SLOT_COUNT = 33;
-const STORAGE_KEY = 'loadflow-plan-v1';
-const blankSlots = () => Array.from({ length: SLOT_COUNT }, () => ({ code: '', weight: '' }));
-let state = loadState();
+const blankSlots = () => Array.from({ length: SLOT_COUNT }, () => ({ code: '', weight: '', version: 0 }));
+let state = { transfer: '', slots: blankSlots(), updated: '', revision: -1 };
 let activeSlot = -1;
-let toastTimer;
-
+let activeVersion, activeGeneration, transferRevision;
+let toastTimer, busy = false, online = false, polling = false;
 const $ = (id) => document.getElementById(id);
 const slotDialog = $('slot-dialog');
 const transferDialog = $('transfer-dialog');
 
-function loadState() {
-  try {
-    const value = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (value && Array.isArray(value.slots) && value.slots.length === SLOT_COUNT) return value;
-  } catch (_) { /* ignore invalid browser storage */ }
-  return { transfer: '', slots: blankSlots(), updated: '' };
+function connection(ok) {
+  online = ok;
+  $('connection-status').textContent = ok ? 'SYNCHRON' : 'KEINE VERBINDUNG';
+  document.querySelector('.live-indicator').classList.toggle('offline', !ok);
 }
-
-function saveState() {
-  state.updated = new Date().toISOString();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  render();
+function acceptPlan(plan) {
+  if (plan.revision > state.revision) { state = plan; render(); }
+}
+async function api(path, data) {
+  let response;
+  try {
+    response = await fetch(new URL(`api/${path}`, document.baseURI), {
+      method: data ? 'POST' : 'GET', cache: 'no-store',
+      headers: data ? { 'Content-Type': 'application/json' } : {},
+      body: data ? JSON.stringify(data) : undefined,
+      signal: AbortSignal.timeout(10000)
+    });
+    const result = await response.json();
+    connection(true);
+    if (!response.ok) {
+      if (result.plan) acceptPlan(result.plan);
+      if (response.status >= 500) connection(false);
+      throw new Error(result.error || 'Anfrage fehlgeschlagen.');
+    }
+    return result;
+  } catch (error) {
+    if (!response || error instanceof SyntaxError) {
+      connection(false);
+      throw new Error('Keine Serververbindung. Eingabe ist nicht bestätigt gespeichert. Bitte Verbindung prüfen und erneut versuchen.');
+    }
+    throw error;
+  }
+}
+async function syncPlan() {
+  acceptPlan(await api('plan'));
+}
+async function poll() {
+  if (polling || busy) return;
+  polling = true;
+  try { await syncPlan(); } catch (_) { /* status remains visible */ }
+  finally { polling = false; }
+}
+async function mutate(path, data, success) {
+  if (busy) return;
+  busy = true;
+  document.querySelectorAll('dialog button, dialog input').forEach(el => el.disabled = true);
+  try {
+    acceptPlan(await api(path, data));
+    success();
+  } catch (error) { window.alert(error.message); }
+  finally {
+    busy = false;
+    document.querySelectorAll('dialog button, dialog input').forEach(el => el.disabled = false);
+  }
 }
 
 function slotPosition(index) {
@@ -64,7 +105,10 @@ function escapeHtml(value) {
 }
 
 function openSlot(index) {
+  if (busy || !online) { showToast('Bitte Serververbindung abwarten.'); return; }
   activeSlot = index;
+  activeVersion = state.slots[index].version;
+  activeGeneration = state.generation;
   const slot = state.slots[index];
   $('modal-position').textContent = `PLATZ ${String(index + 1).padStart(2, '0')}`;
   const position = slotPosition(index);
@@ -97,9 +141,9 @@ $('slot-grid').addEventListener('click', (event) => {
   if (remove) {
     event.stopPropagation();
     const index = Number(remove.dataset.remove);
-    state.slots[index] = { code: '', weight: '' };
-    saveState();
-    showToast(`Eintrag auf Platz ${String(index + 1).padStart(2, '0')} gelöscht`);
+    mutate(`slots/${index}`, { code: '', weight: '', version: state.slots[index].version, generation: state.generation }, () => {
+      showToast(`Eintrag auf Platz ${String(index + 1).padStart(2, '0')} gelöscht`);
+    });
     return;
   }
   const slot = event.target.closest('[data-slot]');
@@ -112,37 +156,37 @@ $('slot-grid').addEventListener('keydown', (event) => {
   }
 });
 
-$('slot-form').addEventListener('submit', (event) => {
-  event.preventDefault();
-  if (activeSlot < 0) return;
+async function saveSlotAndNext(allowEmpty = false) {
+  if (busy || activeSlot < 0) return;
   const code = $('barcode-input').value.trim();
   const weight = $('weight-input').value.replace(',', '.');
-  if (!code) {
-    $('barcode-input').focus();
+  if (!code && allowEmpty && !weight) {
+    closeDialog(slotDialog);
+    openSlot((activeSlot + 1) % SLOT_COUNT);
     return;
   }
-  state.slots[activeSlot] = { code, weight: weight === '' ? '' : String(Number(weight).toFixed(1)) };
+  if (code.length !== 20) { showToast('Die Sendungsnummer muss genau 20 Zeichen enthalten.'); return; }
+  if (!$('weight-input').reportValidity()) return;
   const savedIndex = activeSlot;
-  saveState();
-  closeDialog(slotDialog);
-  const nextIndex = (savedIndex + 1) % SLOT_COUNT;
-  showToast(`Platz ${String(savedIndex + 1).padStart(2, '0')} gespeichert`);
-  openSlot(nextIndex);
+  await mutate(`slots/${savedIndex}`, { code, weight, version: activeVersion, generation: activeGeneration }, () => {
+    closeDialog(slotDialog);
+    showToast(`Platz ${String(savedIndex + 1).padStart(2, '0')} gespeichert`);
+  });
+  if (!slotDialog.open) openSlot((savedIndex + 1) % SLOT_COUNT);
+}
+$('slot-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  saveSlotAndNext();
 });
-
 $('barcode-input').addEventListener('input', updateBarcodeCount);
-
 slotDialog.addEventListener('keydown', (event) => {
   if (event.key !== 'Tab') return;
   event.preventDefault();
-  const code = $('barcode-input').value.trim();
-  const weight = $('weight-input').value.replace(',', '.');
-  if (code) state.slots[activeSlot] = { code, weight: weight === '' ? '' : String(Number(weight).toFixed(1)) };
-  const nextIndex = (activeSlot + 1) % SLOT_COUNT;
-  saveState();
-  closeDialog(slotDialog);
-  openSlot(nextIndex);
+  saveSlotAndNext(true);
 });
+[slotDialog, transferDialog].forEach(dialog => dialog.addEventListener('cancel', event => {
+  if (busy) event.preventDefault();
+}));
 
 document.querySelectorAll('[data-close]').forEach((button) => button.addEventListener('click', () => {
   closeDialog(slotDialog);
@@ -150,6 +194,8 @@ document.querySelectorAll('[data-close]').forEach((button) => button.addEventLis
 }));
 
 function openTransferDialog() {
+  if (busy || !online) { showToast('Bitte Serververbindung abwarten.'); return; }
+  transferRevision = state.revision;
   $('transfer-input').value = state.transfer;
   transferDialog.showModal();
   setTimeout(() => $('transfer-input').focus(), 80);
@@ -161,19 +207,19 @@ $('transfer-form').addEventListener('submit', (event) => {
   event.preventDefault();
   const transfer = $('transfer-input').value.trim();
   if (!transfer) return;
-  const isNew = transfer !== state.transfer;
-  state.transfer = transfer;
-  // A new transfer starts with an empty vehicle; editing the current transfer keeps its entries.
-  if ($('transfer-form').dataset.new === 'yes') state.slots = blankSlots();
-  $('transfer-form').dataset.new = 'no';
-  saveState();
-  closeDialog(transferDialog);
-  showToast(isNew ? 'Neuer Ladeplan wurde angelegt' : 'Transfernummer aktualisiert');
+  const reset = $('transfer-form').dataset.new === 'yes';
+  if (reset && state.slots.some(slot => slot.code) && !window.confirm('Neuen Ladeplan starten und alle 33 Plätze für alle Rechner leeren?')) return;
+  mutate('transfer', { transfer, reset, revision: transferRevision }, () => {
+    closeDialog(transferDialog);
+    showToast(reset ? 'Neuer Ladeplan wurde angelegt' : 'Transfernummer aktualisiert');
+  });
 });
 $('new-transfer').addEventListener('click', () => { $('transfer-form').dataset.new = 'yes'; });
 $('edit-transfer').addEventListener('click', () => { $('transfer-form').dataset.new = 'no'; });
 
-$('print-plan').addEventListener('click', () => {
+$('print-plan').addEventListener('click', async () => {
+  if (busy) return;
+  try { await syncPlan(); } catch (error) { window.alert(error.message); return; }
   $('print-date').textContent = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date());
   render();
   window.print();
@@ -198,3 +244,10 @@ viewButtons.forEach(button => button.addEventListener('click', () => setTruckVie
 let savedTruckView = 'side';
 try { savedTruckView = localStorage.getItem('loadflow-view') || 'side'; } catch (_) {}
 setTruckView(savedTruckView);
+
+
+connection(false);
+poll();
+setInterval(poll, 2000);
+window.addEventListener('online', poll);
+window.addEventListener('offline', () => connection(false));
