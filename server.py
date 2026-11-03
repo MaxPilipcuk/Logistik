@@ -1,4 +1,4 @@
-"""Shared loading plan. SQLite is included in Python; Gunicorn serves WSGI."""
+"""Shared loading plan. SQLite is included in Python; The Python standard library serves WSGI."""
 import json
 import os
 import re
@@ -113,3 +113,22 @@ def application(environ, start_response):
 
 
 initialize()
+
+
+if __name__ == '__main__':
+    from socketserver import ThreadingMixIn
+    from wsgiref.simple_server import WSGIServer, make_server
+
+    class ThreadedServer(ThreadingMixIn, WSGIServer):
+        daemon_threads = True
+        request_queue_size = 32
+
+        def get_request(self):
+            connection, address = super().get_request()
+            connection.settimeout(15)
+            return connection, address
+
+    port = int(os.environ.get('PORT', '80'))
+    with make_server('0.0.0.0', port, application, server_class=ThreadedServer) as httpd:
+        print(f'LKW Beladung listening on port {port}', flush=True)
+        httpd.serve_forever()

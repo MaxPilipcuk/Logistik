@@ -1,6 +1,6 @@
 # LKW_Beladung
 
-Gemeinsamer Beladungsplan für 33 Plätze und eine Transfernummer. Ein Docker-Container liefert Webseite und API aus; SQLite speichert den aktuellen Plan in `/data/ladeplan.db`. Kein separater Datenbankserver.
+Gemeinsamer Beladungsplan für 33 Plätze und eine Transfernummer. Ein Docker-Container liefert Webseite und API aus; SQLite speichert den aktuellen Plan in `/data/ladeplan.db`. Kein separater Datenbankserver. Der interne HTTP-Server und SQLite verwenden ausschließlich die Python-Standardbibliothek; beim Build werden keine Pakete von PyPI heruntergeladen. Das Basisimage `python:3.13-alpine` muss lokal vorhanden oder über die Container-Registry erreichbar sein.
 
 ## Start / Update
 
